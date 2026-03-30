@@ -1,0 +1,49 @@
+base_config:
+  - ./sr_base.yaml
+  - ./df2k4x.yaml
+
+# Trainer class for RRDB
+trainer_cls: tasks.rrdb.RRDBDf2kTask
+
+# RRDB model parameters (compatible with srdiff_pretrained_div2k)
+# hidden_size = rrdb_num_feat = 32 for compatibility
+hidden_size: 32
+num_block: 8
+
+# Training parameters (from srdiff_pretrained_div2k/config.yaml) 
+lr: 0.0002
+max_updates: 100000
+batch_size: 64
+eval_batch_size: 1
+valid_steps: 3
+
+# Data configuration
+binary_data_dir: data/binary/custom_df2k4x
+work_dir: checkpoints/rrdb_custom_df2k
+
+# Data processing (from df2k4x.yaml)
+patch_size: 160
+crop_size: 320
+thresh_size: 160
+test_crop_size: [2040, 2040]
+test_thresh_size: 0
+sr_scale: 4
+
+# Training settings (from sr_base.yaml)
+data_interp: bicubic
+data_augmentation: false
+num_sanity_val_steps: 3
+test_save_png: false
+gen_dir_name: ''
+
+# Additional settings for stability
+clip_grad_norm: 10
+accumulate_grad_batches: 1
+amp: false
+num_workers: 8
+save_best: true
+num_ckpt_keep: 100
+val_check_interval: 4000
+valid_monitor_key: val_loss
+valid_monitor_mode: min
+tb_log_interval: 100
